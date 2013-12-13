@@ -1671,16 +1671,23 @@
 		compatible = "qcom,msm-audio-ion";
 	};
 
-	qcom,msm-pcm {
-		compatible = "qcom,msm-pcm-dsp";
-		qcom,msm-pcm-dsp-id = <0>;
+	qti,msm-pcm {
+		compatible = "qti,msm-pcm-dsp";
+		qti,msm-pcm-dsp-id = <0>;
 	};
 
+<<<<<<< HEAD
 	qcom,msm-pcm-low-latency {
 		compatible = "qcom,msm-pcm-dsp";
 		qcom,msm-pcm-dsp-id = <1>;
 		qcom,msm-pcm-low-latency;
 		qcom,latency-level = "regular";
+=======
+	qti,msm-pcm-low-latency {
+		compatible = "qti,msm-pcm-dsp";
+		qti,msm-pcm-dsp-id = <1>;
+		qti,msm-pcm-low-latency;
+>>>>>>> 01a3f9b... ARM: dts: msm: Update device tree node for msm-pcm-dsp
 	};
 
 	qcom,msm-pcm-routing {
