@@ -2226,9 +2226,6 @@ static void led_blink(struct qpnp_led_data *led,
 		}
 		pwm_free(pwm_cfg->pwm_dev);
 		qpnp_pwm_init(pwm_cfg, led->spmi_dev, led->cdev.name);
-<<<<<<< HEAD
-		qpnp_led_set(&led->cdev, led->cdev.brightness);
-=======
 		if (led->id == QPNP_ID_RGB_RED || led->id == QPNP_ID_RGB_GREEN
 				|| led->id == QPNP_ID_RGB_BLUE) {
 			rc = qpnp_rgb_set(led);
@@ -2246,7 +2243,6 @@ static void led_blink(struct qpnp_led_data *led,
 				dev_err(&led->spmi_dev->dev,
 				"KPDBL set brightness failed (%d)\n", rc);
 		}
->>>>>>> 875425c... leds: leds-qpnp: add blink functionality support for GPLEDs
 	}
 }
 
