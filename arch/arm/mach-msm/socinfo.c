@@ -398,6 +398,7 @@ static struct msm_soc_info cpu_of_id[] = {
 	[146] = {MSM_CPU_8092, "MSM8092"},
 
 	/* 8610 IDs */
+<<<<<<< HEAD
 	[147] = {MSM_CPU_8610, "MSM8610"},
 	[161] = {MSM_CPU_8610, "MSM8110"},
 	[162] = {MSM_CPU_8610, "MSM8210"},
@@ -407,6 +408,17 @@ static struct msm_soc_info cpu_of_id[] = {
 	[166] = {MSM_CPU_8610, "MSM8112"},
 	[225] = {MSM_CPU_8610, "MSM8510"},
 	[226] = {MSM_CPU_8610, "MSM8512"},
+=======
+	[147] = MSM_CPU_8610,
+	[161] = MSM_CPU_8610,
+	[162] = MSM_CPU_8610,
+	[163] = MSM_CPU_8610,
+	[164] = MSM_CPU_8610,
+	[165] = MSM_CPU_8610,
+	[166] = MSM_CPU_8610,
+	[225] = MSM_CPU_8610,
+	[226] = MSM_CPU_8610,
+>>>>>>> 2836d72... ARM: dts: msm: Add support for 8510/8512
 
 	/* 8064AB IDs */
 	[153] = {MSM_CPU_8064AB, "APQ8064AB"},
