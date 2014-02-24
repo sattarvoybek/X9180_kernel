@@ -1225,7 +1225,11 @@ static int ice40_bus_resume(struct usb_hcd *hcd)
 {
 	struct ice40_hcd *ihcd = hcd_to_ihcd(hcd);
 	u8 ctrl0;
+<<<<<<< HEAD
 	int ret, i;
+=======
+	int ret;
+>>>>>>> 38e508c... USB: ice40-hcd: Add ICE40 FPGA based SPI to Inter-Chip USB host driver
 
 	pm_stay_awake(&ihcd->spi->dev);
 	trace_ice40_bus_resume(0); /* start */
@@ -1234,6 +1238,7 @@ static int ice40_bus_resume(struct usb_hcd *hcd)
 	 * Re-program the previous settings. For now we need to
 	 * update the device address only.
 	 */
+<<<<<<< HEAD
 
 	for (i = 0; i < 3; i++) {
 		ret = ice40_spi_load_fw(ihcd);
@@ -1246,6 +1251,9 @@ static int ice40_bus_resume(struct usb_hcd *hcd)
 		return ret;
 	}
 
+=======
+	ice40_spi_load_fw(ihcd);
+>>>>>>> 38e508c... USB: ice40-hcd: Add ICE40 FPGA based SPI to Inter-Chip USB host driver
 	ice40_spi_reg_write(ihcd, ihcd->devnum, FADDR_REG);
 	ihcd->wblen0 = ~0;
 
@@ -1503,7 +1511,11 @@ out:
 static int ice40_spi_load_fw(struct ice40_hcd *ihcd)
 {
 	int ret, i;
+<<<<<<< HEAD
 	struct gpiomux_setting active_old_setting, suspend_old_setting;
+=======
+	struct gpiomux_setting old_setting;
+>>>>>>> 38e508c... USB: ice40-hcd: Add ICE40 FPGA based SPI to Inter-Chip USB host driver
 
 	ret = gpio_direction_output(ihcd->reset_gpio, 0);
 	if (ret  < 0) {
@@ -1525,6 +1537,7 @@ static int ice40_spi_load_fw(struct ice40_hcd *ihcd)
 	 * We temporarily override the chip select config to
 	 * drive it low. The SPI bus needs to be locked down during
 	 * this period to avoid other slave data going to our
+<<<<<<< HEAD
 	 * bridge chip. Disable the SPI runtime suspend for exclusive
 	 * chip select access.
 	 */
@@ -1549,14 +1562,28 @@ static int ice40_spi_load_fw(struct ice40_hcd *ihcd)
 				ret);
 		spi_bus_unlock(ihcd->spi->master);
 		pm_runtime_put_noidle(ihcd->spi->master->dev.parent);
+=======
+	 * bridge chip.
+	 *
+	 */
+	spi_bus_lock(ihcd->spi->master);
+
+	ret = msm_gpiomux_write(ihcd->slave_select_gpio, GPIOMUX_SUSPENDED,
+			&slave_select_setting, &old_setting);
+	if (ret < 0) {
+		pr_err("fail to select the slave %d\n", ret);
+>>>>>>> 38e508c... USB: ice40-hcd: Add ICE40 FPGA based SPI to Inter-Chip USB host driver
 		goto out;
 	}
 
 	ret = ice40_spi_power_up(ihcd);
 	if (ret < 0) {
 		pr_err("fail to power up the chip\n");
+<<<<<<< HEAD
 		spi_bus_unlock(ihcd->spi->master);
 		pm_runtime_put_noidle(ihcd->spi->master->dev.parent);
+=======
+>>>>>>> 38e508c... USB: ice40-hcd: Add ICE40 FPGA based SPI to Inter-Chip USB host driver
 		goto out;
 	}
 
@@ -1568,6 +1595,7 @@ static int ice40_spi_load_fw(struct ice40_hcd *ihcd)
 	usleep_range(1200, 1250);
 
 	ret = msm_gpiomux_write(ihcd->slave_select_gpio, GPIOMUX_SUSPENDED,
+<<<<<<< HEAD
 			&suspend_old_setting, NULL);
 	if (ret < 0) {
 		pr_err("fail to rewrite suspend setting %d\n", ret);
@@ -1587,6 +1615,14 @@ static int ice40_spi_load_fw(struct ice40_hcd *ihcd)
 
 	pm_runtime_put_noidle(ihcd->spi->master->dev.parent);
 
+=======
+			&old_setting, NULL);
+	if (ret < 0) {
+		pr_err("fail to de-select the slave %d\n", ret);
+		goto power_off;
+	}
+
+>>>>>>> 38e508c... USB: ice40-hcd: Add ICE40 FPGA based SPI to Inter-Chip USB host driver
 	ret = spi_sync_locked(ihcd->spi, ihcd->fmsg);
 
 	spi_bus_unlock(ihcd->spi->master);
@@ -1925,6 +1961,7 @@ static ssize_t ice40_dbg_cmd_write(struct file *file, const char __user *ubuf,
 		ihcd->port_flags |= (USB_PORT_STAT_C_CONNECTION << 16);
 		ihcd->pcd_pending = true;
 		usb_hcd_poll_rh_status(ihcd->hcd);
+<<<<<<< HEAD
 	} else if (!strcmp(buf, "config_test")) {
 		ice40_spi_power_off(ihcd);
 		ret = ice40_spi_load_fw(ihcd);
@@ -1932,6 +1969,8 @@ static ssize_t ice40_dbg_cmd_write(struct file *file, const char __user *ubuf,
 			pr_err("config load failed\n");
 			goto out;
 		}
+=======
+>>>>>>> 38e508c... USB: ice40-hcd: Add ICE40 FPGA based SPI to Inter-Chip USB host driver
 	} else {
 		ret = -EINVAL;
 		goto out;
