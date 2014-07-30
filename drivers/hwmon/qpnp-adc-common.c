@@ -1218,15 +1218,12 @@ int32_t qpnp_adc_get_devicetree_data(struct spmi_device *spmi,
 		adc_channel_list[i].channel_num = channel_num;
 		adc_channel_list[i].adc_decimation = decimation;
 		adc_channel_list[i].fast_avg_setup = fast_avg_setup;
-<<<<<<< HEAD
-=======
 		if (!of_device_is_compatible(node, "qcom,qpnp-iadc")) {
 			adc_channel_list[i].chan_path_prescaling = scaling;
 			adc_channel_list[i].adc_scale_fn = post_scaling;
 			adc_channel_list[i].hw_settle_time = hw_settle_time;
 			adc_channel_list[i].calib_type = calib_type;
 		}
->>>>>>> ba87458... hwmon: qpnp-current: Fix parameter configuration for IADC
 		i++;
 	}
 
