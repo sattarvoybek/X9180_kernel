@@ -1466,7 +1466,7 @@ void msm_comm_scale_clocks_and_bus(struct msm_vidc_inst *inst)
 		dprintk(VIDC_WARN,
 				"Failed to scale DDR bus. Performance might be impacted\n");
 	}
-	if (core->resources.has_ocmem) {
+	if (core->resources.ocmem_size) {
 		if (msm_comm_scale_bus(core, inst->session_type,
 					OCMEM_MEM))
 			dprintk(VIDC_WARN,
@@ -1474,6 +1474,7 @@ void msm_comm_scale_clocks_and_bus(struct msm_vidc_inst *inst)
 	}
 }
 
+<<<<<<< HEAD
 static inline unsigned long get_ocmem_requirement(u32 height, u32 width)
 {
 	int num_mbs = 0;
@@ -1520,6 +1521,8 @@ release_ocmem_failed:
 	return rc;
 }
 
+=======
+>>>>>>> 39c9f4e... msm: vidc: Refactor OCMEM alloc, set, unset and free
 static int msm_comm_init_core_done(struct msm_vidc_inst *inst)
 {
 	struct msm_vidc_core *core = inst->core;
@@ -1812,10 +1815,8 @@ static int msm_vidc_load_resources(int flipped_state,
 	struct msm_vidc_inst *inst)
 {
 	int rc = 0;
-	u32 ocmem_sz = 0;
 	struct hfi_device *hdev;
 	int num_mbs_per_sec = 0;
-	int height, width;
 
 	if (!inst || !inst->core || !inst->core->device) {
 		dprintk(VIDC_ERR, "%s invalid parameters", __func__);
@@ -1848,6 +1849,7 @@ static int msm_vidc_load_resources(int flipped_state,
 						inst, inst->state);
 		goto exit;
 	}
+<<<<<<< HEAD
 	if (inst->core->resources.has_ocmem) {
 		height = max(inst->prop.height[CAPTURE_PORT],
 			inst->prop.height[OUTPUT_PORT]);
@@ -1875,6 +1877,9 @@ static int msm_vidc_load_resources(int flipped_state,
 			"Failed to vote for OCMEM BW. Performance will be impacted\n");
 		}
 	}
+=======
+
+>>>>>>> 39c9f4e... msm: vidc: Refactor OCMEM alloc, set, unset and free
 	rc = call_hfi_op(hdev, session_load_res, (void *) inst->session);
 	if (rc) {
 		dprintk(VIDC_ERR,
@@ -3542,3 +3547,48 @@ int msm_comm_smem_get_domain_partition(struct msm_vidc_inst *inst,
 	return msm_smem_get_domain_partition(inst->mem_client, flags,
 			buffer_type, domain_num, partition_num);
 }
+<<<<<<< HEAD
+=======
+
+void msm_vidc_fw_unload_handler(struct work_struct *work)
+{
+	struct msm_vidc_core *core = NULL;
+	struct hfi_device *hdev = NULL;
+	int rc = 0;
+
+	core = container_of(work, struct msm_vidc_core, fw_unload_work.work);
+	if (!core || !core->device) {
+		dprintk(VIDC_ERR, "%s - invalid work or core handle\n",
+				__func__);
+		return;
+	}
+
+	hdev = core->device;
+
+	mutex_lock(&core->lock);
+	if (list_empty(&core->instances) &&
+		core->state != VIDC_CORE_UNINIT) {
+		if (core->state > VIDC_CORE_INIT) {
+			dprintk(VIDC_DBG, "Calling vidc_hal_core_release\n");
+			rc = call_hfi_op(hdev, core_release,
+					hdev->hfi_device_data);
+			if (rc) {
+				dprintk(VIDC_ERR,
+					"Failed to release core, id = %d\n",
+					core->id);
+				return;
+			}
+		}
+
+		core->state = VIDC_CORE_UNINIT;
+
+		call_hfi_op(hdev, unload_fw, hdev->hfi_device_data);
+		dprintk(VIDC_DBG, "Firmware unloaded\n");
+		if (core->resources.ocmem_size)
+			msm_comm_unvote_buses(core, DDR_MEM|OCMEM_MEM);
+		else
+			msm_comm_unvote_buses(core, DDR_MEM);
+	}
+	mutex_unlock(&core->lock);
+}
+>>>>>>> 39c9f4e... msm: vidc: Refactor OCMEM alloc, set, unset and free
