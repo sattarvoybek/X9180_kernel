@@ -489,12 +489,9 @@ enum msm_actuator_cfg_type_t {
 	CFG_SET_ACTUATOR_INFO,
 	CFG_SET_DEFAULT_FOCUS,
 	CFG_SET_POSITION,
-<<<<<<< HEAD
 	CFG_MOVE_FOCUS,
-=======
 	CFG_ACTUATOR_POWERDOWN,
 	CFG_ACTUATOR_POWERUP,
->>>>>>> c654111... msm: camera: Adding interface for power operations in actuator driver
 };
 
 enum actuator_type {
