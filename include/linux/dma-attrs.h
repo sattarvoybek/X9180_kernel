@@ -17,11 +17,8 @@ enum dma_attr {
 	DMA_ATTR_NON_CONSISTENT,
 	DMA_ATTR_NO_KERNEL_MAPPING,
 	DMA_ATTR_STRONGLY_ORDERED,
-<<<<<<< HEAD
-=======
 	DMA_ATTR_SKIP_ZEROING,
 	DMA_ATTR_SKIP_CPU_SYNC,
->>>>>>> 70ed0e0... common: DMA-mapping: add DMA_ATTR_SKIP_CPU_SYNC attribute
 	DMA_ATTR_MAX,
 };
 
