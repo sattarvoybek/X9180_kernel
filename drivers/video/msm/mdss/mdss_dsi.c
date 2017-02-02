@@ -1267,11 +1267,7 @@ static int __devexit mdss_dsi_ctrl_remove(struct platform_device *pdev)
 		pr_err("%s: failed to de-init vregs\n", __func__);
 	mdss_dsi_put_dt_vreg_data(&pdev->dev, &ctrl_pdata->power_data);
 	mfd = platform_get_drvdata(pdev);
-<<<<<<< HEAD
-	iounmap(mdss_dsi_base);
-=======
 	msm_dss_iounmap(&ctrl_pdata->mmss_misc_io);
->>>>>>> bad560c... msm: mdss: Add support for ULPS mode for DSI
 	return 0;
 }
 
