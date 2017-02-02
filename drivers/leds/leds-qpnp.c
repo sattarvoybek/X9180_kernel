@@ -2175,13 +2175,10 @@ restore:
 static void led_blink(struct qpnp_led_data *led,
 			struct pwm_config_data *pwm_cfg)
 {
-<<<<<<< HEAD
-=======
 	int rc;
 
 	flush_work(&led->work);
 	mutex_lock(&led->lock);
->>>>>>> 1ff1376... leds: leds-qpnp: allocate ordered work queue for led
 	if (pwm_cfg->use_blink) {
 		if (led->cdev.brightness) {
 			pwm_cfg->blinking = true;
@@ -3327,9 +3324,6 @@ static int __devinit qpnp_leds_probe(struct spmi_device *spmi)
 			goto fail_id_check;
 		}
 
-<<<<<<< HEAD
-		mutex_init(&led->lock);
-=======
 		if (led->id != QPNP_ID_FLASH1_LED0 &&
 					led->id != QPNP_ID_FLASH1_LED1)
 			mutex_init(&led->lock);
@@ -3351,7 +3345,6 @@ static int __devinit qpnp_leds_probe(struct spmi_device *spmi)
 			}
 		}
 
->>>>>>> 1ff1376... leds: leds-qpnp: allocate ordered work queue for led
 		INIT_WORK(&led->work, qpnp_led_work);
 
 		rc =  qpnp_led_initialize(led);
@@ -3446,15 +3439,11 @@ static int __devinit qpnp_leds_probe(struct spmi_device *spmi)
 
 fail_id_check:
 	for (i = 0; i < parsed_leds; i++) {
-<<<<<<< HEAD
-		mutex_destroy(&led_array[i].lock);
-=======
 		if (led_array[i].id != QPNP_ID_FLASH1_LED0 &&
 				led_array[i].id != QPNP_ID_FLASH1_LED1)
 			mutex_destroy(&led_array[i].lock);
 		if (led_array[i].in_order_command_processing)
 			destroy_workqueue(led_array[i].workqueue);
->>>>>>> 1ff1376... leds: leds-qpnp: allocate ordered work queue for led
 		led_classdev_unregister(&led_array[i].cdev);
 	}
 
@@ -3468,16 +3457,12 @@ static int __devexit qpnp_leds_remove(struct spmi_device *spmi)
 
 	for (i = 0; i < parsed_leds; i++) {
 		cancel_work_sync(&led_array[i].work);
-<<<<<<< HEAD
-		mutex_destroy(&led_array[i].lock);
-=======
 		if (led_array[i].id != QPNP_ID_FLASH1_LED0 &&
 				led_array[i].id != QPNP_ID_FLASH1_LED1)
 			mutex_destroy(&led_array[i].lock);
 
 		if (led_array[i].in_order_command_processing)
 			destroy_workqueue(led_array[i].workqueue);
->>>>>>> 1ff1376... leds: leds-qpnp: allocate ordered work queue for led
 		led_classdev_unregister(&led_array[i].cdev);
 		switch (led_array[i].id) {
 		case QPNP_ID_WLED:
